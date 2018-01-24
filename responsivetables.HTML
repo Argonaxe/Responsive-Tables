@@ -6,18 +6,15 @@
 		table { width: 100% }
 		table tr { background: white }
 		table tr:nth-of-type(even) { background: #EEEEEE }
-
 		@media ( max-width:600px ) {
 			table thead, table th { display: none }
 			table td span, table td:before{ padding: 5px; }
-
 			table tr td {
 				display: table;
 				width: 100%;
 				clear: both;
 				margin: 5px 0;
 			}
-
 			table td:before { 
 				content: attr(data-heading); 
 				font-weight: bold;
@@ -25,7 +22,6 @@
 				display: table-cell;
 				width: 50%;
 			}
-
 			table td span {
 				display: table-cell;
 				width: 50%;
@@ -36,50 +32,57 @@
 	</style>
 	<title>Responsive Tables</title>
 	<script type="text/javascript">
-        /* FEEL FREE TO REMOVE OR RENAME THESE FUNCTIONS - SHORT HAND FUNCTIONS */
-		window.TAG = function(x) 	{ return document.getElementsByTagName(x)	}
-		window.IN = function(x) { return x.innerHTML 						}
-
 		window.addEventHandler = function(elem, eventType, handler) {
-		  	if (elem.addEventListener) elem.addEventListener(eventType, handler, false);
-		    else if (elem.attachEvent) elem.attachEvent('on' + eventType, handler); 
-		}
-
+		  	if (elem.addEventListener) { 
+				elem.addEventListener(eventType, handler, false);
+			} else if (elem.attachEvent) { 
+				elem.attachEvent('on' + eventType, handler); 
+			}
+		};
+		
 		window.ready = function(x) {
-			try { 
-				addEventHandler(document, "DOMContentLoaded", x); 
-			} catch (e) {
-				setTimeout(addEventHandler(document, "DOMContentLoaded", function(){x()}));
+			addEventHandler(document, "DOMContentLoaded", x); 
+		};
+		
+		Element.prototype.find = function(html){
+			return this.querySelectorAll(html);
+		};
+		
+		window.TAG = function(x) { 
+			return document.getElementsByTagName(x)	
+		};
+		
+		window.IN = function(x)  { 
+			return x.innerHTML 						
+		};
+		
+		function resptables(){
+			var tbls = TAG('table');
+			
+			for (var i = 0, s = tbls.length; i < s; i++ ) { 
+				var tbl = tbls[i];
+				var ths = tbl.find('th');
+				var tds = tbl.find('td');
+				var headings = [];
+				
+				for (var j = 0, z = ths.length; j < z; j++) {
+					headings.push(ths[j]);
+				}
+				
+				for (var j = 0, k = 0,  z = tds.length; j < z; j++) {
+					var td = tds[j];
+					var heading = headings[k++].textContent;
+					if (k === headings.length) { k = 0; }
+					
+					try {
+						td.setAttribute("data-heading", heading);
+					} catch (e) {
+						td.createAttribute("data-heading");
+						td.setAttribute("data-heading", heading);
+					}
+				}
 			}
 		}
-
-		function resptables(){
-			[TAG('table')].forEach.call(TAG('table'), function(e){
-				var headings = [];
-
-				[e.children].forEach.call(e.children, function(i) {
-					if (i.tagName == 'THEAD'){
-						[i.children].forEach.call(i.children, function(x) {
-							[x.children].forEach.call(x.children, function(j) {
-								headings.push(IN(j));
-							});
-						});
-
-					} else if (i.tagName == 'TBODY') { 
-						[i.children].forEach.call(i.children, function(x) {
-							var counter = 0;
-
-							[x.children].forEach.call(x.children, function(j) {
-								j.setAttribute("data-heading", headings[counter]);
-								counter ++;
-							});
-						});
-					}
-				});
-			});
-		}
-
-
 		ready(function() {
 			try {
 				resptables();
