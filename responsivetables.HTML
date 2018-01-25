@@ -6,26 +6,34 @@
 		table { width: 100% }
 		table tr { background: white }
 		table tr:nth-of-type(even) { background: #EEEEEE }
+		
 		@media ( max-width:600px ) {
-			table thead, table th { display: none }
+			table thead, table th { display: none !important }
 			table td span, table td:before{ padding: 5px; }
-			table tr td {
-				display: table;
+			
+			table, caption, thead, tbody, tr, th, td,
+			table td span, table td:before {
+				display: block;
+				float: left;
 				width: 100%;
+			}
+			
+			table td span, table td:before{ 
+				padding: 2%;
+				width: 46% !important; 
+			}
+			
+			table tr td {
 				clear: both;
 				margin: 5px 0;
 			}
+			
 			table td:before { 
 				content: attr(data-heading); 
 				font-weight: bold;
 				text-align: left;
-				display: table-cell;
-				width: 50%;
 			}
-			table td span {
-				display: table-cell;
-				width: 50%;
-			}
+			
 		} @media( min-width: 600px) {
 			table tr td { text-align: center; }
 		}
@@ -83,6 +91,7 @@
 				}
 			}
 		}
+		
 		ready(function() {
 			try {
 				resptables();
