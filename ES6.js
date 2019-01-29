@@ -23,7 +23,7 @@
   // A fnction to iterate over each td within the table.  
   const process = (tds, ths) => tds.forEach(td => {
     set(td, getTh(ths, i));
-    i == ths.length ? i = 0 : i += 1;
+    i == ths.length - 1 ? i = 0 : ++i;
   });
 
   // A simple function that will iterate over each table, setting the 'data-heading'
