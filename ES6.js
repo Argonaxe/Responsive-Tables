@@ -23,7 +23,6 @@
 	// A fnction to iterate over each td within the table.  
 	const process = (tds, ths) => tds.forEach(td => {
 		set(td, getTh(ths, i));
-		console.log(getTh(ths, i));
 		i == ths.length ? i = 0 : i += 1;
 	});
 	
